@@ -184,3 +184,98 @@ web은 www의 약자로 인터넷에 연결된 사용자들이 서로의 정보�
 - HTTP 지속연결 - 지속연결을 하고 난 후 연결이 이루어지고 난 뒤 각각의 자원들을 요청하고<br> 모든 자원에 대한 응답이 돌아온 후에 연결을 종료한다.
 
 ---
+
+# browser and how they work?
+
+```브라우저 그리고 브라우저의 작동 방식```
+
+먼저 브라우저가 무엇인지에 대해 알아보자.
+
+브라우저란?
+
+웹에서 정보를 탐색하고 HTML 문서, 이미지 등 여러 콘텐츠를 우리에게 표현해주는 소프트웨어이다.
+
+우리에게 익숙한 구글의 크롬, 애플의 사파리, 마이크로소프트 엣지, 모질라의 파이어폭스 등이 있다.
+
+### 브라우저의 기본 구성요소
+
+1. 사용자 인터페이스 : 주소 표시줄, 이전/다음 버튼, 북마크 등 페이지 뷰 이외의 다른 부분
+2. 브라우저 엔진 : 사용자 인터페이스와 렌더링 엔진 사이 동작을 제어
+3. 렌더링 엔진 : HTML, CSS를 파싱해 화면에 요청한 컨텐츠를 표시
+4. 통신 : HTTP 요청과 같은 네트워크 호출에 사용됨
+5. UI 백엔드 : 기본적인 위젯(콤보 박스 등)을 그림
+6. 자바스크립트 인터프리터 : 자바스크립트 코드를 해석하고 실행
+7. 테이터 스토리지 : 자료를 저장하는 계층으로 쿠키 등을 저장하는 웹 데이터 베이스
+
+![image](https://web.dev/static/articles/howbrowserswork/image/browser-components-9cd8ff834cc9c_1920.png)
+
+### 렌더링 엔진
+
+렌더링 엔진은 위에서 설명한것과 같이 요청받은 내용을 브라우저 화면에 표시해주는 역할을 한다.
+
+브라우저마다 사용하는 렌더링 엔진이 다르기에 같은 페이지가 다르게 보이는 경우가 있다.
+
+렌더링 엔진의 종류는 다음과 같다.
+
+| 브라우저  | 렌더링 엔진  |
+|-------|---------|
+|IE|Trident|
+|Edge|EdgeHTML, Blink|
+|Chrome|Webkit, Blink(버전 28 이후)|
+|Safari|Webkit|
+|FireFox|Gecko|
+
+각각의 렌더링 엔진들은 웹 표준에 따라서 개발자들이 작성한 문서를 브라우저에 보여주지만,
+
+개발 진척도나 별도 규칙에 따라 지원하는 표준이 다르거나 렌더링 알고리즘과 방식에 차이가 있을 수 있다.
+
+### 렌더링 엔진 동작 과정
+
+![image](https://velog.velcdn.com/images%2Fthyoondev%2Fpost%2Fcef4b5a9-41d7-4681-9a83-5e85784fc83c%2F1608995710399render-min.png)
+
+위 과정이 렌더링 엔진의 기본 동작 과정이다.
+
+1. 렌더링 엔진은 HTML 문서를 파싱하여 DOM 트리를 구축한다.<br><br>
+2. 그 다음 외부 CSS 파일과 함께 포함된 스타일 요소를 파싱한다.<br><br>
+3. DOM 트리와 2번의 결과물을 합쳐 렌더 트리를 구축한다.<br><br>
+4. 렌더 트리 각 노드에 대해 화면 상에서 배치할 곳을 결정한다.<br><br>
+5. UI 백엔드에서 렌더 트리의 각 노드를 그린다.
+
+이 과정을 하나씩 살펴보자.
+
+아래 그림은 렌더링 엔진 중 하나인 웹킷 엔진에 나타낸 그림이다.
+
+![image](https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2Flaupf%2Fbtrb2k8Jd5L%2FuqmWtkHRlnZg3DwXyyMND1%2Fimg.png)
+
+동작 과정의 순서는 위에서 설명한 기본 동작 과정과 유사하다.
+
+### 1.HTML 문서를 파싱하여 *[DOM](document/DOM.md#dom-이란)(Docoument Object Model) *[트리](document/Tree.md#트리란)를 구축한다.
+
+DOM 은 마크업과 1:1 관계를 성립한다
+
+![image](https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2Fdye6Tm%2Fbtrb7yZhbxh%2FNEXpIkMMV0Aqk3e5OSXU41%2Fimg.png)
+
+브라우저는 서버로부터 HTML 문서를 모두 전달받고 HTML 파서를 통하여 파싱 하고 파싱 트리를 생성한다.
+
+생성된 파싱 트리를 기반으로 DOM 트리를 생성한다.
+
+### 2.CSSOM(Css Object Model) 을 생성한다.
+
+![image](https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FbKJnUb%2Fbtrb8f6gRKU%2FDn4wpPKW6FVseOKdgGdZQK%2Fimg.png)
+
+CSS 파일은 스타일 시트 객체로 파싱 되고 각 객체는 CSS 규칙을 포함한다. CSS 규칙 객체(CSSOM)은 선택자와
+
+선언 객체, 그리고 SCC 문법과 일치하는 다른 객체를 포함한다.
+
+### 3.렌더 트리(DOM + CSSOM)를 생성합니다.
+
+DOM 트리가 구축되는 동안 브라우저는 DOM 트리를 기반으로 렌더 트리를 생성합니다.
+
+렌더 트리는 문서를 시각적인 구성 요소로 만들어주는 역할을 합니다.
+
+웹킷은 이 구성 요소를 "렌더러(rendere)" 또는 "렌더 객체(render object)"라는 용어를 사용합니다.<br>
+렌더러는 자신과 자식 요소를 어떻게 배치하고 그려내야 하는지 알고 있습니다.
+
+렌더러는 DOM 요소에 부합하지만 1:1로 대응하는 관계는 아니다. 그 이유는 <head>, display:'none'과 같은<br>
+사용자가 볼 수 없는 DOM 요소는 렌더 트리에 추가되지 않습니다. (visibility 속성에 "hidden" 값이 할당된 요소는 트리에 나타납니다.)
+
